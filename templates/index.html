@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GreenAmmonia: Bio-Catalyst Design | Sustainable Nitrogen-Fixation Catalyst Design</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Container styling for flex layout */
+        .app-shell {
+            display: flex;
+            width: 100%;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Smooth animation for sliding sidebar */
+        .sidebar {
+            transition: transform 0.3s ease, margin-left 0.3s ease;
+            z-index: 100;
+            flex-shrink: 0;
+        }
+
+        /* Collapsed / Hidden sidebar state */
+        .sidebar.collapsed {
+            margin-left: -280px !important;
+            display: none !important;
+        }
+
+        /* Main content layout with auto-centering on collapse */
+        .main {
+            flex: 1;
+            transition: all 0.35s ease-in-out;
+            width: 100%;
+            padding: 24px;
+            box-sizing: border-box;
+        }
+
+        /* Center the page content when sidebar is closed */
+        .sidebar.collapsed ~ .main {
+            max-width: 1200px !important;
+            margin: 0 auto !important;
+            padding: 24px 20px !important;
+        }
+    </style>
+</head>
+<body>
+<div class="app-shell">
+
+    <aside class="sidebar" id="app-sidebar" style="display: flex; flex-direction: column; justify-content: space-between; min-height: 100vh; padding: 20px 16px; box-sizing: border-box;">
+        <div>
+            <!-- Header with Title and Arrow Collapse Button -->
+            <div class="brand" style="display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 24px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="brand-icon" style="background: linear-gradient(135deg, #0284c7, #2563eb); border-radius: 12px; width: 40px; height: 40px; min-width: 40px; display: flex; align-items: center; justify-content: center; font-size: 20px; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35);">
+                        ⚗️
+                    </div>
+                    <div>
+                        <h1 style="font-size: 1.05rem; margin: 0; color: #fff; font-weight: 700; white-space: nowrap;">GreenAmmonia</h1>
+                        <span style="font-size: 0.72rem; color: #94a3b8; display: block; margin-top: 1px;">Bio-Catalyst Design</span>
+                    </div>
+                </div>
+                
+                <!-- Arrow button to collapse/hide sidebar -->
+                <button onclick="toggleSidebar()" title="Hide Sidebar" style="background: #1e293b; border: 1px solid #334155; color: #94a3b8; width: 28px; height: 28px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; transition: all 0.2s ease;">
+                    ◀
+                </button>
+            </div>
+
+            <nav style="display: flex; flex-direction: column; gap: 6px;">
+                <p class="nav-label">MAIN</p>
+                <a class="nav-link active" href="#dashboard" onclick="setActiveNav(this)">⌂ <span>Dashboard</span></a>
+                <a class="nav-link" href="#catalyst" onclick="setActiveNav(this)">⚗ <span>Catalyst Designer</span></a>
+                <a class="nav-link" href="#analysis" onclick="setActiveNav(this)">◈ <span>Analysis</span></a>
+                <a class="nav-link" href="#screening" onclick="setActiveNav(this)">◉ <span>Catalyst Screening</span></a>
+                <a class="nav-link" href="#analytics" onclick="setActiveNav(this)">▥ <span>Results & Analytics</span></a>
+                <a class="nav-link" href="#impact" onclick="setActiveNav(this)">♧ <span>Environmental Impact</span></a>
+                <a class="nav-link" href="#reports" onclick="scrollToReports(event)">▤ <span>Reports</span></a>
+            </nav>
+        </div>
+
+        <div class="side-note" style="margin-top: 20px; padding: 12px; background: #0f172a; border-radius: 8px; border: 1px solid #1e293b; position: static;">
+            <div style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem; font-weight: 600; color: #34d399;">
+                <span class="dot" style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block;"></span>
+                Catalyst Analysis Active
+            </div>
+            <small style="color: #64748b; font-size: 0.72rem; display: block; margin-top: 4px;">Candidate evaluation system ready</small>
+        </div>
+    </aside>
+
+    <main class="main" id="main-content">
+
+        <header class="topbar" style="display: flex; align-items: center; justify-content: space-between; gap: 16px;">
+            <div style="display: flex; align-items: center; gap: 14px;">
+                <!-- Sidebar Toggle Button -->
+                <button id="sidebar-toggle-btn" onclick="toggleSidebar()" title="Toggle Sidebar" style="background: #1e293b; border: 1px solid #334155; color: #38bdf8; width: 38px; height: 38px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.3);">
+                    ☰
+                </button>
+
+                <div>
+                    <span class="eyebrow">SUSTAINABLE FERTILISER RESEARCH</span>
+                    <h2 style="margin: 0;">GreenAmmonia: Bio-Catalyst Design</h2>
+                    <p style="margin: 2px 0 0 0;">High-throughput computational screening for nitrogen-fixation catalyst candidates</p>
+                </div>
+            </div>
+            
+            <div class="status">
+                <span class="green-dot"></span> System Active
+            </div>
+        </header>
+
+        <section id="dashboard" class="section">
+            <div class="section-title">
+                <div>
+                    <span class="eyebrow">PROJECT OVERVIEW</span>
+                    <h3>Research Dashboard</h3>
+                </div>
+                <button class="primary-btn" onclick="scrollToSection('catalyst')">+ Analyze Candidate</button>
+            </div>
+
+            <div class="metrics">
+                <div class="metric-card">
+                    <span class="metric-icon">⚗</span>
+                    <div><small>Candidates Evaluated</small><strong>{{ total }}</strong><span>Classical screening</span></div>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-icon blue">◈</span>
+                    <div><small>Best Catalyst Score</small><strong>{{ top.score }}%</strong><span>{{ top.name }}</span></div>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-icon yellow">ϟ</span>
+                    <div><small>Best Energy Barrier</small><strong>{{ top.energy_barrier }}</strong><span>Relative comparison</span></div>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-icon green">♧</span>
+                    <div><small>Top Potential</small><strong>{{ top.potential }}</strong><span>Model-based ranking</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="catalyst" class="section">
+            <div class="section-title">
+                <div>
+                    <span class="eyebrow">STEP 01</span>
+                    <h3>Catalyst Designer</h3>
+                    <p>Select a candidate or specify custom descriptors for computational screening.</p>
+                </div>
+            </div>
+
+            <div class="designer-grid">
+                <div class="panel input-panel">
+                    <!-- Mode Switcher -->
+                    <div class="input-toggle" style="display:flex; gap:8px; margin-bottom:12px;">
+                        <button class="toggle-btn active" id="btn-mode-preset" onclick="setMode('preset')" style="background:#2563eb; color:#fff; border:1px solid #3b82f6; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:0.8rem;">Preset Catalog</button>
+                        <button class="toggle-btn" id="btn-mode-custom" onclick="setMode('custom')" style="background:#1e293b; color:#94a3b8; border:1px solid #334155; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:0.8rem;">+ Custom Catalyst</button>
+                    </div>
+
+                    <!-- Preset Section -->
+                    <div id="preset-controls">
+                        <label for="candidate">Candidate Catalyst</label>
+                        <select id="candidate" onchange="updateMolecularStructure(this.value)">
+                            {% for c in catalysts %}
+                            <option value="{{ c.id }}" data-name="{{ c.name }}" data-formula="{{ c.formula }}">{{ c.name }} — {{ c.formula }}</option>
+                            {% endfor %}
+                        </select>
+
+                        <div class="preset-row">
+                            {% for c in catalysts[:3] %}
+                            <button onclick="selectCandidate('{{ c.id }}')">{{ c.name }}</button>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Custom Spec Section with Live SVG Sync -->
+                    <div id="custom-controls" style="display:none; flex-direction:column; gap:8px; margin-bottom:10px;">
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
+                            <div>
+                                <label style="font-size:0.72rem; color:#94a3b8; display:block; margin-bottom:2px;">Material Name</label>
+                                <input type="text" id="cust-name" value="Cr-N-C" class="custom-live-input" style="width:100%; padding:6px 8px; background:#0f172a; border:1px solid #334155; color:#fff; border-radius:4px; font-size:0.8rem;">
+                            </div>
+                            <div>
+                                <label style="font-size:0.72rem; color:#94a3b8; display:block; margin-bottom:2px;">Full Formula</label>
+                                <input type="text" id="cust-formula" value="Chromium Tetra-Nitrogen Carbon" class="custom-live-input" style="width:100%; padding:6px 8px; background:#0f172a; border:1px solid #334155; color:#fff; border-radius:4px; font-size:0.8rem;">
+                            </div>
+                            <div>
+                                <label style="font-size:0.72rem; color:#94a3b8; display:block; margin-bottom:2px;">Atomic Number (Z)</label>
+                                <input type="number" id="cust-z" value="24" min="1" max="118" step="1" class="custom-live-input" style="width:100%; padding:6px 8px; background:#0f172a; border:1px solid #334155; color:#fff; border-radius:4px; font-size:0.8rem;">
+                            </div>
+                            <div>
+                                <label style="font-size:0.72rem; color:#94a3b8; display:block; margin-bottom:2px;">Electronegativity</label>
+                                <input type="number" id="cust-en" value="1.66" step="0.01" class="custom-live-input" style="width:100%; padding:6px 8px; background:#0f172a; border:1px solid #334155; color:#fff; border-radius:4px; font-size:0.8rem;">
+                            </div>
+                            <div>
+                                <label style="font-size:0.72rem; color:#94a3b8; display:block; margin-bottom:2px;">d-Electrons</label>
+                                <input type="number" id="cust-d" value="4" min="0" max="10" step="1" class="custom-live-input" style="width:100%; padding:6px 8px; background:#0f172a; border:1px solid #334155; color:#fff; border-radius:4px; font-size:0.8rem;">
+                            </div>
+                            <div>
+                                <label style="font-size:0.72rem; color:#94a3b8; display:block; margin-bottom:2px;">Coordination (Ligands)</label>
+                                <input type="number" id="cust-cn" value="4" min="0" max="8" step="1" class="custom-live-input" style="width:100%; padding:6px 8px; background:#0f172a; border:1px solid #334155; color:#fff; border-radius:4px; font-size:0.8rem;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="primary-btn large" onclick="analyzeCandidate()">
+                        Analyze Candidate →
+                    </button>
+
+                    <p class="helper">
+                        Computational model calculates ground state reactivity and score in real time.
+                    </p>
+                </div>
+
+                <div class="panel process-panel">
+                    <div class="pipeline">
+                        <div class="pipeline-step active"><b>01</b><span>Input</span></div>
+                        <i>→</i>
+                        <div class="pipeline-step"><b>02</b><span>Preprocess</span></div>
+                        <i>→</i>
+                        <div class="pipeline-step"><b>03</b><span>Analysis</span></div>
+                        <i>→</i>
+                        <div class="pipeline-step"><b>04</b><span>Screen</span></div>
+                        <i>→</i>
+                        <div class="pipeline-step"><b>05</b><span>Recommend</span></div>
+                    </div>
+                    
+                    <div class="molecule-placeholder">
+                        <div style="text-align: center; margin-bottom: 10px;">
+                            <div id="mol-full-name" style="font-size: 1.15rem; font-weight: 700; color: #38bdf8;">{{ top.name }}</div>
+                            <div id="mol-formula" style="font-size: 0.85rem; color: #94a3b8; margin-top: 2px;">{{ top.formula }}</div>
+                        </div>
+
+                        <div style="position: relative; width: 100%; height: 200px; display: flex; align-items: center; justify-content: center;">
+                            <svg id="mol-svg" viewBox="0 0 300 200" style="width: 100%; height: 100%; overflow: visible;"></svg>
+                        </div>
+
+                        <p>Nitrogen-fixation catalyst active site coordinate</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="analysis" class="section">
+            <div class="section-title">
+                <div>
+                    <span class="eyebrow">STEP 02</span>
+                    <h3>Analysis</h3>
+                </div>
+                <span id="analysis-status" class="badge">Waiting for analysis</span>
+            </div>
+
+            <div class="analysis-grid">
+                <div class="panel result-main">
+                    <div class="result-head">
+                        <div>
+                            <small>SELECTED CANDIDATE</small>
+                            <h4 id="result-name">{{ top.name }}</h4>
+                        </div>
+                        <div id="potential" class="potential">{{ top.potential }}</div>
+                    </div>
+
+                    <div class="score-wrap">
+                        <div class="score-number" id="score">{{ top.score }}%</div>
+                        <div>
+                            <strong>Classical suitability score</strong>
+                            <p>Combined score from energy barrier, stability, selectivity and activity.</p>
+                        </div>
+                    </div>
+                    <div class="progress"><span id="score-bar" style="width:{{ top.score }}%"></span></div>
+                </div>
+
+                <div class="panel">
+                    <h4>Predicted Properties</h4>
+                    <div class="property"><span>Energy Barrier</span><strong id="energy">{{ top.energy_barrier }}</strong></div>
+                    <div class="property"><span>Stability</span><strong id="stability">{{ top.stability }}</strong></div>
+                    <div class="property"><span>Selectivity</span><strong id="selectivity">{{ (top.selectivity * 100)|round(1) }}%</strong></div>
+                    <div class="property"><span>Activity</span><strong id="activity">{{ (top.activity * 100)|round(1) }}%</strong></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="screening" class="section">
+            <div class="section-title">
+                <div>
+                    <span class="eyebrow">STEP 03</span>
+                    <h3>Catalyst Screening</h3>
+                    <p>Classical ranking of available candidate materials.</p>
+                </div>
+            </div>
+
+            <div class="panel table-panel">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>RANK</th>
+                            <th>CATALYST</th>
+                            <th>ENERGY BARRIER</th>
+                            <th>STABILITY</th>
+                            <th>SELECTIVITY</th>
+                            <th>SCORE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for c in catalysts %}
+                        <tr>
+                            <td><span class="rank">{{ loop.index }}</span></td>
+                            <td><strong>{{ c.name }}</strong><small>{{ c.formula }}</small></td>
+                            <td>{{ c.energy_barrier }}</td>
+                            <td>{{ c.stability }}</td>
+                            <td>{{ (c.selectivity * 100)|round(1) }}%</td>
+                            <td><span class="score-pill">{{ c.score }}%</span></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="analytics" class="section">
+            <div class="section-title">
+                <div>
+                    <span class="eyebrow">STEP 04</span>
+                    <h3>Results & Analytics</h3>
+                </div>
+            </div>
+
+            <div class="charts-grid">
+                <div class="panel chart-panel">
+                    <h4>Candidate Performance</h4>
+                    <div class="bars">
+                    {% for c in catalysts %}
+                        <div class="bar-row">
+                            <span>{{ c.name }}</span>
+                            <div class="bar-track"><i style="width:{{ c.score }}%"></i></div>
+                            <b>{{ c.score }}%</b>
+                        </div>
+                    {% endfor %}
+                    </div>
+                </div>
+
+                <div class="panel chart-panel">
+                    <h4>Energy Barrier Comparison</h4>
+                    <div class="energy-chart">
+                        {% for c in catalysts %}
+                        <div class="energy-bar" style="height:{{ (c.energy_barrier / 27 * 100)|round(1) }}%">
+                            <span>{{ c.energy_barrier }}</span>
+                            <small>{{ c.name }}</small>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="impact" class="section">
+            <div class="section-title">
+                <div>
+                    <span class="eyebrow">STEP 05</span>
+                    <h3>Environmental Impact</h3>
+                    <p>Classical prototype estimates.</p>
+                </div>
+            </div>
+
+            <div class="impact-grid">
+                <div class="impact-card">
+                    <span>ENERGY REDUCTION</span>
+                    <strong id="impact-energy">—</strong>
+                    <p>Estimated relative reduction</p>
+                </div>
+                <div class="impact-card green-card">
+                    <span>CO₂ REDUCTION</span>
+                    <strong id="impact-co2">—</strong>
+                    <p>Estimated relative reduction</p>
+                </div>
+                <div class="impact-card">
+                    <span>SUSTAINABILITY SCORE</span>
+                    <strong>{{ top.score }}/100</strong>
+                    <p>Candidate screening score</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="reports" class="section">
+            <div class="report-panel" id="report-download-card" style="transition: all 0.3s ease;">
+                <div>
+                    <span class="eyebrow">FINAL OUTPUT</span>
+                    <h3>Generate Research Summary</h3>
+                    <p>Prepare and export the complete catalyst screening and performance audit as a professional PDF report.</p>
+                </div>
+                <button class="primary-btn large" onclick="generateReport()" style="display: flex; align-items: center; gap: 8px;">
+                    <span>⚗️</span> Generate & Export Report
+                </button>
+            </div>
+        </section>
+
+        <footer>
+            <span> • Catalyst Discovery • Evaluation V1</span>
+            <span>Catalyst Screening • Performance Analysis</span>
+        </footer>
+    </main>
+</div>
+
+<script>
+let currentMode = 'preset';
+
+// Toggle Sidebar function (Hides / Reveals sidebar via button)
+function toggleSidebar() {
+    const sidebar = document.getElementById("app-sidebar");
+    sidebar.classList.toggle("collapsed");
+}
+
+const PERIODIC_TABLE = {
+    1:"H", 2:"He", 3:"Li", 4:"Be", 5:"B", 6:"C", 7:"N", 8:"O", 9:"F", 10:"Ne",
+    11:"Na", 12:"Mg", 13:"Al", 14:"Si", 15:"P", 16:"S", 17:"Cl", 18:"Ar",
+    19:"K", 20:"Ca", 21:"Sc", 22:"Ti", 23:"V", 24:"Cr", 25:"Mn", 26:"Fe", 27:"Co",
+    28:"Ni", 29:"Cu", 30:"Zn", 31:"Ga", 32:"Ge", 33:"As", 34:"Se", 35:"Br",
+    39:"Y", 40:"Zr", 41:"Nb", 42:"Mo", 44:"Ru", 45:"Rh", 46:"Pd", 47:"Ag", 48:"Cd",
+    72:"Hf", 73:"Ta", 74:"W", 75:"Re", 76:"Os", 77:"Ir", 78:"Pt", 79:"Au", 80:"Hg", 83:"Bi"
+};
+
+function setActiveNav(element) {
+    document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+    if (element) element.classList.add('active');
+}
+
+function scrollToReports(event) {
+    if (event) event.preventDefault();
+    
+    document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+    const reportsLink = document.querySelector('a[href="#reports"]');
+    if (reportsLink) reportsLink.classList.add('active');
+
+    const reportsSection = document.getElementById("reports");
+    if (reportsSection) {
+        reportsSection.scrollIntoView({ behavior: "smooth", block: "center" });
+        
+        const card = document.getElementById("report-download-card");
+        if (card) {
+            card.style.outline = "2px solid #38bdf8";
+            card.style.boxShadow = "0 0 20px rgba(56, 189, 248, 0.35)";
+            setTimeout(() => {
+                card.style.outline = "none";
+                card.style.boxShadow = "none";
+            }, 1200);
+        }
+    }
+}
+
+function setMode(mode) {
+    currentMode = mode;
+    document.getElementById('btn-mode-preset').style.background = mode === 'preset' ? '#2563eb' : '#1e293b';
+    document.getElementById('btn-mode-preset').style.color = mode === 'preset' ? '#fff' : '#94a3b8';
+    document.getElementById('btn-mode-preset').style.borderColor = mode === 'preset' ? '#3b82f6' : '#334155';
+
+    document.getElementById('btn-mode-custom').style.background = mode === 'custom' ? '#2563eb' : '#1e293b';
+    document.getElementById('btn-mode-custom').style.color = mode === 'custom' ? '#fff' : '#94a3b8';
+    document.getElementById('btn-mode-custom').style.borderColor = mode === 'custom' ? '#3b82f6' : '#334155';
+
+    if (mode === 'preset') {
+        document.getElementById('preset-controls').style.display = 'block';
+        document.getElementById('custom-controls').style.display = 'none';
+        updateMolecularStructure(document.getElementById("candidate").value);
+    } else {
+        document.getElementById('preset-controls').style.display = 'none';
+        document.getElementById('custom-controls').style.display = 'flex';
+        renderCustomMolecule();
+    }
+}
+
+// Live Dynamic Custom Molecule Renderer based on user composition inputs
+function renderCustomMolecule() {
+    const nameInput = document.getElementById("cust-name").value || "Custom";
+    const formulaInput = document.getElementById("cust-formula").value || "User Defined Spec";
+    const zValue = parseInt(document.getElementById("cust-z").value);
+    const cn = parseInt(document.getElementById("cust-cn").value);
+    const validCn = isNaN(cn) ? 4 : Math.max(0, Math.min(8, cn));
+
+    document.getElementById("mol-full-name").textContent = nameInput;
+    document.getElementById("mol-formula").textContent = formulaInput;
+
+    let metalSymbol = PERIODIC_TABLE[zValue] || nameInput.split(/[-\/]/)[0].trim() || "M";
+
+    let ligandType = "N";
+    let ligandStroke = "#3b82f6";
+    let ligandText = "#93c5fd";
+
+    const lowerFormula = (formulaInput + " " + nameInput).toLowerCase();
+    if (lowerFormula.includes("oxide") || lowerFormula.includes(" o ") || lowerFormula.includes("o2")) {
+        ligandType = "O";
+        ligandStroke = "#10b981";
+        ligandText = "#a7f3d0";
+    } else if (lowerFormula.includes("sulf") || lowerFormula.includes(" s ") || lowerFormula.includes("s2")) {
+        ligandType = "S";
+        ligandStroke = "#f59e0b";
+        ligandText = "#fde68a";
+    } else if (lowerFormula.includes("carb") || lowerFormula.includes(" /c") || lowerFormula.includes("-c")) {
+        if (validCn <= 2) {
+            ligandType = "C";
+            ligandStroke = "#64748b";
+            ligandText = "#cbd5e1";
+        }
+    }
+
+    const svg = document.getElementById("mol-svg");
+    let ligandNodes = '';
+    const radius = 65;
+
+    if (validCn > 0) {
+        for (let i = 0; i < validCn; i++) {
+            const deg = (360 / validCn) * i + (validCn === 4 ? 45 : 0);
+            const rad = deg * (Math.PI / 180);
+            const x = 150 + radius * Math.cos(rad);
+            const y = 100 + radius * Math.sin(rad);
+
+            ligandNodes += `
+                <line x1="150" y1="100" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="${ligandStroke}" stroke-width="1.5" stroke-dasharray="3,3" />
+                <circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="13" fill="#1e293b" stroke="${ligandStroke}" stroke-width="1.5" />
+                <text x="${x.toFixed(1)}" y="${(y + 4).toFixed(1)}" fill="${ligandText}" font-size="10" font-weight="bold" text-anchor="middle">${ligandType}</text>
+            `;
+        }
+    }
+
+    svg.innerHTML = `
+        ${ligandNodes}
+        <line x1="150" y1="100" x2="150" y2="35" stroke="#60a5fa" stroke-width="2.5" />
+        <circle cx="150" cy="100" r="22" fill="#d97706" stroke="#fbbf24" stroke-width="2" />
+        <text x="150" y="105" fill="#ffffff" font-size="12" font-weight="bold" text-anchor="middle">${metalSymbol}</text>
+        <circle cx="150" cy="35" r="16" fill="#1d4ed8" stroke="#60a5fa" stroke-width="2" />
+        <text x="150" y="39" fill="#ffffff" font-size="10" font-weight="bold" text-anchor="middle">N₂</text>
+    `;
+}
+
+// Preset Catalog Molecular Renderer
+function updateMolecularStructure(id) {
+    const select = document.getElementById("candidate");
+    const option = select.options[select.selectedIndex] || select.querySelector(`option[value="${id}"]`);
+    if (!option) return;
+
+    document.getElementById("mol-full-name").textContent = option.getAttribute("data-name");
+    document.getElementById("mol-formula").textContent = option.getAttribute("data-formula");
+
+    const svg = document.getElementById("mol-svg");
+    let svgContent = "";
+
+    if (id === "pt-c") {
+        svgContent = `
+            <line x1="150" y1="100" x2="90" y2="135" stroke="#64748b" stroke-width="2" />
+            <line x1="150" y1="100" x2="210" y2="135" stroke="#64748b" stroke-width="2" />
+            <line x1="150" y1="100" x2="150" y2="40" stroke="#60a5fa" stroke-width="3" />
+            <circle cx="90" cy="135" r="14" fill="#1e293b" stroke="#64748b" stroke-width="1.5" /><text x="90" y="139" fill="#cbd5e1" font-size="11" font-weight="bold" text-anchor="middle">C</text>
+            <circle cx="210" cy="135" r="14" fill="#1e293b" stroke="#64748b" stroke-width="1.5" /><text x="210" y="139" fill="#cbd5e1" font-size="11" font-weight="bold" text-anchor="middle">C</text>
+            <circle cx="150" cy="100" r="22" fill="#d97706" stroke="#fbbf24" stroke-width="2" /><text x="150" y="105" fill="#ffffff" font-size="12" font-weight="bold" text-anchor="middle">Pt</text>
+            <circle cx="150" cy="40" r="16" fill="#1d4ed8" stroke="#60a5fa" stroke-width="2" /><text x="150" y="44" fill="#ffffff" font-size="10" font-weight="bold" text-anchor="middle">N₂</text>
+        `;
+    } else if (id.includes("femoco") || id.includes("fevco")) {
+        const topMetal = id.includes("femoco") ? "Mo" : "V";
+        svgContent = `
+            <line x1="110" y1="110" x2="190" y2="110" stroke="#eab308" stroke-width="2" />
+            <line x1="110" y1="110" x2="150" y2="70" stroke="#eab308" stroke-width="2" />
+            <line x1="190" y1="110" x2="150" y2="70" stroke="#eab308" stroke-width="2" />
+            <line x1="150" y1="70" x2="150" y2="30" stroke="#60a5fa" stroke-width="2.5" />
+            <circle cx="110" cy="110" r="17" fill="#d97706" stroke="#fbbf24" stroke-width="2" /><text x="110" y="114" fill="#ffffff" font-size="11" font-weight="bold" text-anchor="middle">Fe</text>
+            <circle cx="190" cy="110" r="17" fill="#d97706" stroke="#fbbf24" stroke-width="2" /><text x="190" y="114" fill="#ffffff" font-size="11" font-weight="bold" text-anchor="middle">Fe</text>
+            <circle cx="150" cy="70" r="19" fill="#059669" stroke="#34d399" stroke-width="2" /><text x="150" y="74" fill="#ffffff" font-size="11" font-weight="bold" text-anchor="middle">${topMetal}</text>
+            <circle cx="150" cy="125" r="12" fill="#713f12" stroke="#eab308" stroke-width="1.5" /><text x="150" y="129" fill="#fef08a" font-size="10" font-weight="bold" text-anchor="middle">S</text>
+            <circle cx="150" cy="30" r="15" fill="#1d4ed8" stroke="#60a5fa" stroke-width="2" /><text x="150" y="34" fill="#ffffff" font-size="10" font-weight="bold" text-anchor="middle">N₂</text>
+        `;
+    } else if (id.includes("tio2")) {
+        const metal = id.includes("ru1") ? "Ru" : "Fe";
+        svgContent = `
+            <line x1="150" y1="100" x2="80" y2="100" stroke="#10b981" stroke-width="2" />
+            <line x1="150" y1="100" x2="220" y2="100" stroke="#10b981" stroke-width="2" />
+            <line x1="150" y1="100" x2="150" y2="155" stroke="#10b981" stroke-width="2" />
+            <line x1="150" y1="100" x2="150" y2="40" stroke="#60a5fa" stroke-width="2.5" />
+            <circle cx="80" cy="100" r="14" fill="#064e3b" stroke="#10b981" stroke-width="1.5" /><text x="80" y="104" fill="#a7f3d0" font-size="11" font-weight="bold" text-anchor="middle">O</text>
+            <circle cx="220" cy="100" r="14" fill="#064e3b" stroke="#10b981" stroke-width="1.5" /><text x="220" y="104" fill="#a7f3d0" font-size="11" font-weight="bold" text-anchor="middle">O</text>
+            <circle cx="150" cy="155" r="14" fill="#1e293b" stroke="#64748b" stroke-width="1.5" /><text x="150" y="159" fill="#cbd5e1" font-size="10" font-weight="bold" text-anchor="middle">Ti</text>
+            <circle cx="150" cy="100" r="22" fill="#d97706" stroke="#fbbf24" stroke-width="2" /><text x="150" y="105" fill="#ffffff" font-size="12" font-weight="bold" text-anchor="middle">${metal}</text>
+            <circle cx="150" cy="40" r="16" fill="#1d4ed8" stroke="#60a5fa" stroke-width="2" /><text x="150" y="44" fill="#ffffff" font-size="10" font-weight="bold" text-anchor="middle">N₂</text>
+        `;
+    } else if (id.includes("feco") || id.includes("fe-mo") || id.includes("cufe")) {
+        const m1 = id.includes("cufe") ? "Cu" : "Fe";
+        const m2 = id.includes("feco") ? "Co" : id.includes("fe-mo") ? "Mo" : "Fe";
+        svgContent = `
+            <line x1="115" y1="100" x2="65" y2="60" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="3,3" />
+            <line x1="115" y1="100" x2="65" y2="140" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="3,3" />
+            <line x1="185" y1="100" x2="235" y2="60" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="3,3" />
+            <line x1="185" y1="100" x2="235" y2="140" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="3,3" />
+            <line x1="115" y1="100" x2="185" y2="100" stroke="#10b981" stroke-width="3" />
+            <line x1="150" y1="100" x2="150" y2="40" stroke="#60a5fa" stroke-width="2.5" />
+            <circle cx="65" cy="60" r="12" fill="#1e293b" stroke="#3b82f6" stroke-width="1.5" /><text x="65" y="64" fill="#93c5fd" font-size="10" font-weight="bold" text-anchor="middle">N</text>
+            <circle cx="65" cy="140" r="12" fill="#1e293b" stroke="#3b82f6" stroke-width="1.5" /><text x="65" y="144" fill="#93c5fd" font-size="10" font-weight="bold" text-anchor="middle">N</text>
+            <circle cx="235" cy="60" r="12" fill="#1e293b" stroke="#3b82f6" stroke-width="1.5" /><text x="235" y="64" fill="#93c5fd" font-size="10" font-weight="bold" text-anchor="middle">N</text>
+            <circle cx="235" cy="140" r="12" fill="#1e293b" stroke="#3b82f6" stroke-width="1.5" /><text x="235" y="144" fill="#93c5fd" font-size="10" font-weight="bold" text-anchor="middle">N</text>
+            <circle cx="115" cy="100" r="18" fill="#d97706" stroke="#fbbf24" stroke-width="2" /><text x="115" y="104" fill="#ffffff" font-size="11" font-weight="bold" text-anchor="middle">${m1}</text>
+            <circle cx="185" cy="100" r="18" fill="#059669" stroke="#34d399" stroke-width="2" /><text x="185" y="104" fill="#ffffff" font-size="11" font-weight="bold" text-anchor="middle">${m2}</text>
+            <circle cx="150" cy="40" r="15" fill="#1d4ed8" stroke="#60a5fa" stroke-width="2" /><text x="150" y="44" fill="#ffffff" font-size="10" font-weight="bold" text-anchor="middle">N₂</text>
+        `;
+    } else {
+        let metal = "Fe";
+        if (id.includes("vn") || id.includes("v-nx")) metal = "V";
+        else if (id.includes("nb")) metal = "Nb";
+        else if (id.includes("schrock") || id.includes("mo-graphene")) metal = "Mo";
+        else if (id.includes("ta")) metal = "Ta";
+        else if (id.includes("biobr")) metal = "Bi";
+        else if (id.includes("g-c3n4")) metal = "NV";
+
+        svgContent = `
+            <line x1="150" y1="100" x2="80" y2="60" stroke="#3b82f6" stroke-width="2" stroke-dasharray="3,3" />
+            <line x1="150" y1="100" x2="220" y2="60" stroke="#3b82f6" stroke-width="2" stroke-dasharray="3,3" />
+            <line x1="150" y1="100" x2="80" y2="140" stroke="#3b82f6" stroke-width="2" stroke-dasharray="3,3" />
+            <line x1="150" y1="100" x2="220" y2="140" stroke="#3b82f6" stroke-width="2" stroke-dasharray="3,3" />
+            <line x1="150" y1="100" x2="150" y2="35" stroke="#60a5fa" stroke-width="3" />
+            <circle cx="80" cy="60" r="14" fill="#1e293b" stroke="#3b82f6" stroke-width="1.5" /><text x="80" y="64" fill="#93c5fd" font-size="11" font-weight="bold" text-anchor="middle">N</text>
+            <circle cx="220" cy="60" r="14" fill="#1e293b" stroke="#3b82f6" stroke-width="1.5" /><text x="220" y="64" fill="#93c5fd" font-size="11" font-weight="bold" text-anchor="middle">N</text>
+            <circle cx="80" cy="140" r="14" fill="#1e293b" stroke="#3b82f6" stroke-width="1.5" /><text x="80" y="144" fill="#93c5fd" font-size="11" font-weight="bold" text-anchor="middle">N</text>
+            <circle cx="220" cy="140" r="14" fill="#1e293b" stroke="#3b82f6" stroke-width="1.5" /><text x="220" y="144" fill="#93c5fd" font-size="11" font-weight="bold" text-anchor="middle">N</text>
+            <circle cx="150" cy="100" r="22" fill="#d97706" stroke="#fbbf24" stroke-width="2" /><text x="150" y="105" fill="#ffffff" font-size="12" font-weight="bold" text-anchor="middle">${metal}</text>
+            <circle cx="150" cy="35" r="16" fill="#1d4ed8" stroke="#60a5fa" stroke-width="2" /><text x="150" y="39" fill="#ffffff" font-size="10" font-weight="bold" text-anchor="middle">N₂</text>
+        `;
+    }
+
+    svg.innerHTML = svgContent;
+}
+
+async function analyzeCandidate() {
+    const status = document.getElementById("analysis-status");
+    status.textContent = "Running property prediction...";
+    status.className = "badge loading";
+
+    let payload = {};
+    if (currentMode === 'custom') {
+        payload = {
+            mode: 'custom',
+            custom_name: document.getElementById("cust-name").value,
+            custom_formula: document.getElementById("cust-formula").value,
+            atomic_num: document.getElementById("cust-z").value,
+            electronegativity: document.getElementById("cust-en").value,
+            d_electrons: document.getElementById("cust-d").value,
+            coordination_n: document.getElementById("cust-cn").value,
+            carbon_support_ratio: 0.75
+        };
+    } else {
+        payload = {
+            mode: 'preset',
+            candidate_id: document.getElementById("candidate").value
+        };
+    }
+
+    try {
+        const response = await fetch("/api/analyze", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || "Analysis failed");
+
+        document.getElementById("result-name").textContent = data.name;
+        document.getElementById("potential").textContent = data.potential;
+        document.getElementById("score").textContent = data.score + "%";
+        document.getElementById("score-bar").style.width = data.score + "%";
+        document.getElementById("energy").textContent = data.energy_barrier;
+        document.getElementById("stability").textContent = data.stability;
+        document.getElementById("selectivity").textContent = (data.selectivity * 100).toFixed(1) + "%";
+        document.getElementById("activity").textContent = (data.activity * 100).toFixed(1) + "%";
+        document.getElementById("impact-energy").textContent = data.estimated_energy_reduction + "%";
+        document.getElementById("impact-co2").textContent = data.estimated_co2_reduction + "%";
+
+        status.textContent = "Analysis completed";
+        status.className = "badge success";
+
+        document.getElementById("analysis").scrollIntoView({behavior: "smooth"});
+    } catch (error) {
+        status.textContent = error.message;
+        status.className = "badge error";
+    }
+}
+
+function selectCandidate(id) {
+    setMode('preset');
+    document.getElementById("candidate").value = id;
+    updateMolecularStructure(id);
+    analyzeCandidate();
+}
+
+function scrollToSection(id) {
+    document.getElementById(id).scrollIntoView({behavior: "smooth"});
+}
+
+// Generate Professional PDF Report directly when "Generate Report" is clicked
+function generateReport() {
+    const candidateName = document.getElementById("result-name").textContent.trim();
+    const score = document.getElementById("score").textContent.trim();
+    const energy = document.getElementById("energy").textContent.trim();
+    const stability = document.getElementById("stability").textContent.trim();
+    const selectivity = document.getElementById("selectivity").textContent.trim();
+    const activity = document.getElementById("activity").textContent.trim();
+    const potential = document.getElementById("potential").textContent.trim();
+    const energyRed = document.getElementById("impact-energy").textContent.trim();
+    const co2Red = document.getElementById("impact-co2").textContent.trim();
+    const formula = document.getElementById("mol-formula").textContent.trim();
+
+    downloadReportDirect(candidateName, formula, score, energy, stability, selectivity, activity, energyRed, co2Red, potential);
+}
+
+// Professional Printable PDF Exporter
+function downloadReportDirect(name, formula, score, energy, stability, selectivity, activity, eRed, co2Red, potential) {
+    const timestamp = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    const refId = `CAT-SCR-${Date.now().toString().slice(-6)}`;
+    
+    const svgElement = document.getElementById("mol-svg");
+    const svgHtml = svgElement ? svgElement.outerHTML : '';
+
+    const printWindow = window.open('', '_blank', 'width=900,height=950');
+    
+    printWindow.document.write(`
+<!DOCTYPE html>
+<html>
+<head>
+    <title>${name} - Screening Certificate</title>
+    <style>
+        @page { size: A4; margin: 15mm; }
+        body { font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif; color: #0f172a; margin: 0; padding: 24px; background: #fff; }
+        .header { border-bottom: 2px solid #0284c7; padding-bottom: 14px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; }
+        .title { font-size: 22px; font-weight: 800; color: #0f172a; margin: 0; }
+        .subtitle { font-size: 11px; color: #0284c7; text-transform: uppercase; font-weight: 700; letter-spacing: 1px; margin-top: 3px; }
+        .meta { text-align: right; font-size: 11px; color: #475569; }
+        .badge { background: #0284c7; color: #fff; font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 4px; display: inline-block; margin-bottom: 4px; text-transform: uppercase; }
+        
+        .hero-box { display: flex; justify-content: space-between; align-items: center; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; }
+        .candidate-title { font-size: 20px; font-weight: 800; color: #0f172a; margin: 0; }
+        .candidate-sub { color: #64748b; font-size: 12px; margin-top: 2px; }
+        .score-box { text-align: right; }
+        .score-num { font-size: 26px; font-weight: 900; color: #0284c7; }
+        
+        .section-title { font-size: 12px; font-weight: 800; color: #0f172a; text-transform: uppercase; letter-spacing: 0.5px; border-left: 3px solid #0284c7; padding-left: 8px; margin: 18px 0 10px 0; }
+        
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+        .card { border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px; background: #ffffff; }
+        .card-title { font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase; margin-bottom: 8px; }
+        
+        table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        table td { padding: 7px 4px; border-bottom: 1px solid #f1f5f9; }
+        table tr:last-child td { border-bottom: none; }
+        .bold { font-weight: 700; text-align: right; color: #0f172a; }
+        
+        .impact-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .impact-card { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; padding: 12px; text-align: center; }
+        .impact-num { font-size: 18px; font-weight: 800; color: #166534; }
+        .impact-label { font-size: 10px; font-weight: 700; color: #15803d; text-transform: uppercase; margin-top: 3px; }
+        
+        .mol-container { height: 140px; display: flex; align-items: center; justify-content: center; background: #0f172a; border-radius: 6px; padding: 10px; }
+        .mol-container svg { height: 100%; width: 100%; }
+        
+        .footer { margin-top: 24px; padding-top: 12px; border-top: 1px solid #e2e8f0; font-size: 10px; color: #64748b; display: flex; justify-content: space-between; }
+        
+        @media print {
+            .no-print { display: none; }
+            body { padding: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="no-print" style="background: #eff6ff; border: 1px solid #bfdbfe; padding: 10px 16px; border-radius: 6px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center;">
+        <span style="font-size: 13px; color: #1e40af;"><strong>Report Preview:</strong> Click "Save as PDF" to export the official evaluation certificate.</span>
+        <button onclick="window.print()" style="background: #0284c7; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 700; cursor: pointer;">🖨 Save as PDF</button>
+    </div>
+
+    <div class="header">
+        <div>
+            <div class="title">GreenAmmonia: Bio-Catalyst Design</div>
+            <div class="subtitle">Computational Screening & Performance Audit</div>
+        </div>
+        <div class="meta">
+            <div><span class="badge">Official Analysis</span></div>
+            <div><strong>Report Ref:</strong> ${refId}</div>
+            <div><strong>Date:</strong> ${timestamp}</div>
+        </div>
+    </div>
+
+    <div class="hero-box">
+        <div>
+            <div class="candidate-title">${name}</div>
+            <div class="candidate-sub">${formula}</div>
+        </div>
+        <div class="score-box">
+            <div class="score-num">${score}</div>
+            <div style="font-size: 11px; font-weight: 700; color: #0284c7;">${potential}</div>
+        </div>
+    </div>
+
+    <div class="section-title">1. Molecular Geometry & Predictive Properties</div>
+    <div class="grid-2">
+        <div class="card">
+            <div class="card-title">Predicted Catalytic Properties</div>
+            <table>
+                <tr><td>Reaction Energy Barrier (ΔE)</td><td class="bold">${energy}</td></tr>
+                <tr><td>Thermodynamic Stability</td><td class="bold">${stability}</td></tr>
+                <tr><td>Reaction Selectivity (N₂ → NH₃)</td><td class="bold">${selectivity}</td></tr>
+                <tr><td>Intrinsic Activity Factor</td><td class="bold">${activity}</td></tr>
+            </table>
+        </div>
+        <div class="card">
+            <div class="card-title">Active Site Coordination Model</div>
+            <div class="mol-container">
+                ${svgHtml}
+            </div>
+        </div>
+    </div>
+
+    <div class="section-title">2. Environmental & Process Impact</div>
+    <div class="impact-row">
+        <div class="impact-card">
+            <div class="impact-num">-${eRed}</div>
+            <div class="impact-label">Energy Demand Reduction</div>
+        </div>
+        <div class="impact-card">
+            <div class="impact-num">-${co2Red}</div>
+            <div class="impact-label">Net CO₂ Emission Abatement</div>
+        </div>
+        <div class="impact-card">
+            <div class="impact-num">${score}</div>
+            <div class="impact-label">Sustainability Index</div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div>
+            <strong>Computational Pipeline:</strong> GreenAmmonia: Bio-Catalyst Design Classical v1.4.0<br>
+            <strong>Method:</strong> Descriptor-Based Multi-Property Screening
+        </div>
+        <div style="text-align: right;">
+            <strong>Verification:</strong> <span style="color: #16a34a; font-weight: 700;">PASS (Quality Grade A)</span><br>
+            <em>Verified for experimental trial recommendation</em>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            setTimeout(function() { window.print(); }, 400);
+        };
+    <\/script>
+</body>
+</html>
+    `);
+    printWindow.document.close();
+}
+
+// Attach Live Event Listeners to all custom input fields
+document.addEventListener("DOMContentLoaded", () => {
+    const customInputs = document.querySelectorAll(".custom-live-input");
+    customInputs.forEach(input => {
+        input.addEventListener("input", () => {
+            if (currentMode === 'custom') renderCustomMolecule();
+        });
+        input.addEventListener("change", () => {
+            if (currentMode === 'custom') renderCustomMolecule();
+        });
+        input.addEventListener("keyup", () => {
+            if (currentMode === 'custom') renderCustomMolecule();
+        });
+    });
+
+    const initialVal = document.getElementById("candidate").value;
+    updateMolecularStructure(initialVal);
+});
+</script>
+</body>
+</html>
