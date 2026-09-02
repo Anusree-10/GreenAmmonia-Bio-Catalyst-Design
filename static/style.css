@@ -19,14 +19,11 @@
     box-sizing: border-box;
 }
 
-/* DESKTOP VIEWPORT LOCK */
 html, body {
     margin: 0;
     padding: 0;
-    width: 100vw;
-    height: 100vh;
-    max-height: 100vh;
-    overflow: hidden;
+    width: 100%;
+    min-height: 100%;
     background: 
         radial-gradient(circle at 90% 0%, rgba(2, 132, 199, 0.04), transparent 40%),
         radial-gradient(circle at 10% 100%, rgba(22, 163, 74, 0.03), transparent 30%),
@@ -39,17 +36,18 @@ button, select, input { font: inherit; }
 
 .app-shell {
     display: flex;
-    height: 100vh;
-    width: 100vw;
-    overflow: hidden;
+    width: 100%;
+    min-height: 100vh;
     position: relative;
 }
 
-/* SIDEBAR (DESKTOP) */
+/* SIDEBAR (DESKTOP PINNED) */
 .sidebar {
     width: 255px;
     min-width: 255px;
     height: 100vh;
+    position: sticky;
+    top: 0;
     background: #ffffff;
     border-right: 1px solid var(--border);
     padding: 24px 16px;
@@ -150,15 +148,12 @@ body.sidebar-collapsed .sidebar {
     margin-right: 6px;
 }
 
-/* MAIN WORKSPACE (DESKTOP) */
+/* MAIN WORKSPACE */
 .main {
     flex: 1;
-    height: 100vh;
-    overflow-y: auto !important;
-    overflow-x: hidden;
-    padding: 28px 36px 60px;
+    min-width: 0;
+    padding: 28px 36px 80px;
     box-sizing: border-box;
-    scroll-behavior: smooth;
 }
 
 body.sidebar-collapsed .main {
@@ -200,7 +195,10 @@ body.sidebar-collapsed .main {
     font-weight: 600;
 }
 
-.section { margin-bottom: 44px; }
+.section { 
+    margin-bottom: 48px; 
+    scroll-margin-top: 20px;
+}
 
 .section-title {
     display: flex;
@@ -514,8 +512,11 @@ select:focus, .custom-live-input:focus {
 .property strong { color: var(--text); font-weight: 700; }
 
 /* TABLE */
-.table-panel { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; min-width: 650px; }
+.table-panel { 
+    overflow-x: auto; 
+    -webkit-overflow-scrolling: touch;
+}
+table { width: 100%; border-collapse: collapse; min-width: 620px; }
 th {
     text-align: left;
     color: #64748b;
@@ -664,37 +665,36 @@ td small { color: var(--text-muted); }
 footer {
     display: flex;
     justify-content: space-between;
-    padding: 24px 0 10px;
+    padding: 24px 0 30px;
     color: #94a3b8;
     font-size: 11px;
     border-top: 1px solid var(--border);
+    margin-top: 20px;
 }
 
-/* TABLET BREAKPOINT */
+/* TABLET */
 @media (max-width: 1024px) {
     .metrics { grid-template-columns: repeat(2, 1fr); }
     .designer-grid, .analysis-grid, .charts-grid, .impact-grid { grid-template-columns: 1fr; }
 }
 
-/* MOBILE RESPONSIVE DRAWER & SCROLLING (< 768px) */
-/* --- MOBILE RESPONSIVE DRAWER & SCROLLING (< 768px) --- */
+/* MOBILE (< 768px): COMPLETELY UNCONSTRAINED SCROLLING */
 @media (max-width: 768px) {
     html, body {
         overflow-y: auto !important;
         height: auto !important;
-        max-height: none !important;
-        margin: 0 !important;
-        padding: 0 !important;
+        min-height: 100vh !important;
+        -webkit-overflow-scrolling: touch;
     }
 
     .app-shell {
         display: block !important;
-        position: relative !important;
+        height: auto !important;
         width: 100% !important;
         min-height: 100vh !important;
     }
 
-    /* 1. Pull sidebar completely OUT of the page document flow */
+    /* Fixed drawer menu completely separated from normal page flow */
     .sidebar {
         position: fixed !important;
         top: 0 !important;
@@ -705,27 +705,20 @@ footer {
         height: 100vh !important;
         z-index: 999999 !important;
         background: #ffffff !important;
-        transform: translateX(-105%) !important; /* Fully hidden off-screen by default */
+        transform: translateX(-105%) !important;
         transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
         box-shadow: 4px 0 24px rgba(0, 0, 0, 0.2) !important;
         margin: 0 !important;
     }
 
-    /* 2. Slide sidebar IN when hamburger is clicked */
     body.mobile-menu-open .sidebar {
         transform: translateX(0) !important;
     }
 
-    /* 3. Dark backdrop overlay */
     .mobile-backdrop {
         display: none;
         position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        bottom: 0 !important;
-        width: 100vw !important;
-        height: 100vh !important;
+        inset: 0 !important;
         background: rgba(15, 23, 42, 0.55) !important;
         backdrop-filter: blur(3px) !important;
         z-index: 999990 !important;
@@ -735,14 +728,15 @@ footer {
         display: block !important;
     }
 
-    /* 4. Main dashboard starts immediately at top */
+    /* Main Workspace expands naturally with full content */
     .main {
         width: 100% !important;
         height: auto !important;
+        min-height: 100vh !important;
         margin: 0 !important;
-        padding: 16px 14px 60px !important;
-        overflow: visible !important;
+        padding: 16px 12px 100px !important;
         display: block !important;
+        overflow: visible !important;
     }
 
     .topbar {
@@ -755,7 +749,6 @@ footer {
         line-height: 1.25 !important;
     }
 
-    /* Single column layout for cards & forms on phones */
     .metrics, .designer-grid, .analysis-grid, .charts-grid, .impact-grid {
         grid-template-columns: 1fr !important;
         gap: 14px !important;
@@ -772,5 +765,15 @@ footer {
 
     .energy-bar small {
         display: none !important;
+    }
+
+    .report-panel {
+        flex-direction: column !important;
+        gap: 16px !important;
+        align-items: flex-start !important;
+    }
+
+    .report-panel .primary-btn {
+        width: 100% !important;
     }
 }

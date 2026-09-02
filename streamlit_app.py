@@ -10,7 +10,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Allow full height and unconstrained mobile scrolling
+# Strip default Streamlit margins and let inner HTML breathe
 st.markdown("""
     <style>
     #MainMenu, footer, header { display: none !important; visibility: hidden !important; }
@@ -18,11 +18,9 @@ st.markdown("""
         padding: 0 !important; 
         margin: 0 !important;
         max-width: 100% !important; 
-        min-height: 100vh !important;
     }
     iframe { 
         width: 100% !important; 
-        min-height: 2900px !important;
         border: none !important; 
         display: block !important;
     }
@@ -147,13 +145,12 @@ try:
     with open("static/style.css", "r", encoding="utf-8") as f:
         css_content = f.read()
 
-    # Inline static styles directly into template
+    # Inline CSS directly
     html_raw = html_raw.replace(
         '<link rel="stylesheet" href="{{ url_for(\'static\', filename=\'style.css\') }}">',
         f'<style>{css_content}</style>'
     )
 
-    # Render Jinja variables
     template = Template(html_raw)
     rendered_html = template.render(
         catalysts=catalysts,
@@ -161,8 +158,8 @@ try:
         total=total_candidates
     )
 
-    # Generous viewport height + native iframe scrolling allows all 5 steps to be reached
-    components.html(rendered_html, height=2900, scrolling=True)
+    # 4500px provides guaranteed clearance for every single section on mobile
+    components.html(rendered_html, height=4500, scrolling=True)
 
 except Exception as err:
     st.error(f"Error loading dashboard: {err}")
