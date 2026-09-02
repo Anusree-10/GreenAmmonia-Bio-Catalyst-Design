@@ -177,10 +177,12 @@
                     <div id="preset-controls">
                         <label for="candidate">Candidate Catalyst</label>
                         <select id="candidate" onchange="updateMolecularStructure(this.value)">
-                            {% for c in catalysts %}
-                            <option value="{{ c.id }}" data-name="{{ c.name }}" data-formula="{{ c.formula }}">{{ c.name }} — {{ c.formula }}</option>
-                            {% endfor %}
-                        </select>
+    {% for c in catalysts %}
+    <option value="{{ c.id }}" data-name="{{ c.name }}" data-formula="{{ c.formula }}">
+        {{ c.name }} ({{ c.formula }})
+    </option>
+    {% endfor %}
+</select>
 
                         <div class="preset-row">
                             {% for c in catalysts[:3] %}

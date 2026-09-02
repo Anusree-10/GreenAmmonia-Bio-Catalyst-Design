@@ -677,6 +677,7 @@ footer {
 }
 
 /* MOBILE RESPONSIVE DRAWER & SCROLLING (< 768px) */
+/* --- MOBILE RESPONSIVE TWEAKS (< 768px) --- */
 @media (max-width: 768px) {
     html, body {
         overflow-y: auto !important;
@@ -691,75 +692,63 @@ footer {
         overflow: visible !important;
     }
 
-    /* Mobile Sliding Drawer */
-    .sidebar {
-        position: fixed !important;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        width: 270px !important;
-        min-width: 270px !important;
-        height: 100vh !important;
-        z-index: 99999 !important;
-        transform: translateX(-100%);
-        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        box-shadow: 4px 0 24px rgba(0,0,0,0.15);
-    }
-
-    body.mobile-menu-open .sidebar {
-        transform: translateX(0) !important;
-    }
-
-    /* Backdrop */
-    .mobile-backdrop {
-        display: none;
-        position: fixed;
-        inset: 0;
-        background: rgba(15, 23, 42, 0.5);
-        backdrop-filter: blur(2px);
-        z-index: 99998;
-    }
-
-    body.mobile-menu-open .mobile-backdrop {
-        display: block;
-    }
-
-    /* Workspace */
+    /* Prevent top text from clipping under browser bar */
     .main {
         width: 100% !important;
         height: auto !important;
         overflow: visible !important;
-        padding: 16px 14px 60px !important;
+        padding: 18px 12px 60px !important;
     }
 
     .topbar {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 12px;
+        padding-bottom: 16px !important;
+        margin-bottom: 20px !important;
     }
 
     .topbar h2 {
         font-size: 20px !important;
+        line-height: 1.25;
     }
 
-    .designer-grid, .analysis-grid, .charts-grid, .impact-grid, .metrics {
-        grid-template-columns: 1fr !important;
-        gap: 14px !important;
+    .topbar p, .section-title p {
+        font-size: 0.8rem !important;
+        line-height: 1.4 !important;
+        word-break: normal;
     }
 
-    #custom-controls > div {
-        grid-template-columns: 1fr !important;
+    /* Fix dropdown text clipping */
+    select, .custom-live-input {
+        font-size: 13px !important;
+        padding: 10px 10px !important;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
     }
 
-    .metric-card {
-        padding: 14px 16px !important;
+    /* Preset chip buttons: wrap cleanly */
+    .preset-row {
+        gap: 6px !important;
     }
 
-    .molecule-placeholder {
-        height: 220px !important;
+    .preset-row button {
+        padding: 5px 10px !important;
+        font-size: 11px !important;
+        white-space: nowrap;
     }
 
-    .energy-bar small {
-        display: none; /* Hide rotated labels to prevent mobile overflow */
+    /* Ensure pipeline step labels don't bunch up */
+    .pipeline-step span {
+        font-size: 9px !important;
+    }
+
+    .pipeline-step b {
+        width: 28px !important;
+        height: 28px !important;
+        font-size: 10px !important;
+    }
+
+    .molecule-placeholder p {
+        font-size: 10px !important;
+        padding: 0 8px;
     }
 }
