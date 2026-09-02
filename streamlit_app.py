@@ -10,7 +10,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Allow full height and natural scrolling on mobile devices
+# Allow full height and unconstrained mobile scrolling
 st.markdown("""
     <style>
     #MainMenu, footer, header { display: none !important; visibility: hidden !important; }
@@ -18,15 +18,18 @@ st.markdown("""
         padding: 0 !important; 
         margin: 0 !important;
         max-width: 100% !important; 
+        min-height: 100vh !important;
     }
     iframe { 
         width: 100% !important; 
+        min-height: 2900px !important;
         border: none !important; 
         display: block !important;
     }
     </style>
 """, unsafe_allow_html=True)
 
+# Complete 8 Candidate Catalog
 catalysts = [
     {
         "id": "pt_c",
@@ -144,11 +147,13 @@ try:
     with open("static/style.css", "r", encoding="utf-8") as f:
         css_content = f.read()
 
+    # Inline static styles directly into template
     html_raw = html_raw.replace(
         '<link rel="stylesheet" href="{{ url_for(\'static\', filename=\'style.css\') }}">',
         f'<style>{css_content}</style>'
     )
 
+    # Render Jinja variables
     template = Template(html_raw)
     rendered_html = template.render(
         catalysts=catalysts,
@@ -156,8 +161,8 @@ try:
         total=total_candidates
     )
 
-    # Enable native iframe scrolling and provide ample height
-    components.html(rendered_html, height=2200, scrolling=True)
+    # Generous viewport height + native iframe scrolling allows all 5 steps to be reached
+    components.html(rendered_html, height=2900, scrolling=True)
 
 except Exception as err:
     st.error(f"Error loading dashboard: {err}")
