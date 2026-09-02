@@ -677,78 +677,100 @@ footer {
 }
 
 /* MOBILE RESPONSIVE DRAWER & SCROLLING (< 768px) */
-/* --- MOBILE RESPONSIVE TWEAKS (< 768px) --- */
+/* --- MOBILE RESPONSIVE DRAWER & SCROLLING (< 768px) --- */
 @media (max-width: 768px) {
     html, body {
         overflow-y: auto !important;
         height: auto !important;
         max-height: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
 
     .app-shell {
         display: block !important;
-        height: auto !important;
+        position: relative !important;
         width: 100% !important;
-        overflow: visible !important;
+        min-height: 100vh !important;
     }
 
-    /* Prevent top text from clipping under browser bar */
+    /* 1. Pull sidebar completely OUT of the page document flow */
+    .sidebar {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        bottom: 0 !important;
+        width: 280px !important;
+        min-width: 280px !important;
+        height: 100vh !important;
+        z-index: 999999 !important;
+        background: #ffffff !important;
+        transform: translateX(-105%) !important; /* Fully hidden off-screen by default */
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        box-shadow: 4px 0 24px rgba(0, 0, 0, 0.2) !important;
+        margin: 0 !important;
+    }
+
+    /* 2. Slide sidebar IN when hamburger is clicked */
+    body.mobile-menu-open .sidebar {
+        transform: translateX(0) !important;
+    }
+
+    /* 3. Dark backdrop overlay */
+    .mobile-backdrop {
+        display: none;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        background: rgba(15, 23, 42, 0.55) !important;
+        backdrop-filter: blur(3px) !important;
+        z-index: 999990 !important;
+    }
+
+    body.mobile-menu-open .mobile-backdrop {
+        display: block !important;
+    }
+
+    /* 4. Main dashboard starts immediately at top */
     .main {
         width: 100% !important;
         height: auto !important;
+        margin: 0 !important;
+        padding: 16px 14px 60px !important;
         overflow: visible !important;
-        padding: 18px 12px 60px !important;
+        display: block !important;
     }
 
     .topbar {
-        padding-bottom: 16px !important;
-        margin-bottom: 20px !important;
+        padding-bottom: 14px !important;
+        margin-bottom: 18px !important;
     }
 
     .topbar h2 {
-        font-size: 20px !important;
-        line-height: 1.25;
+        font-size: 21px !important;
+        line-height: 1.25 !important;
     }
 
-    .topbar p, .section-title p {
-        font-size: 0.8rem !important;
-        line-height: 1.4 !important;
-        word-break: normal;
+    /* Single column layout for cards & forms on phones */
+    .metrics, .designer-grid, .analysis-grid, .charts-grid, .impact-grid {
+        grid-template-columns: 1fr !important;
+        gap: 14px !important;
     }
 
-    /* Fix dropdown text clipping */
+    #custom-controls > div {
+        grid-template-columns: 1fr !important;
+    }
+
     select, .custom-live-input {
         font-size: 13px !important;
-        padding: 10px 10px !important;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
+        padding: 9px 10px !important;
     }
 
-    /* Preset chip buttons: wrap cleanly */
-    .preset-row {
-        gap: 6px !important;
-    }
-
-    .preset-row button {
-        padding: 5px 10px !important;
-        font-size: 11px !important;
-        white-space: nowrap;
-    }
-
-    /* Ensure pipeline step labels don't bunch up */
-    .pipeline-step span {
-        font-size: 9px !important;
-    }
-
-    .pipeline-step b {
-        width: 28px !important;
-        height: 28px !important;
-        font-size: 10px !important;
-    }
-
-    .molecule-placeholder p {
-        font-size: 10px !important;
-        padding: 0 8px;
+    .energy-bar small {
+        display: none !important;
     }
 }
