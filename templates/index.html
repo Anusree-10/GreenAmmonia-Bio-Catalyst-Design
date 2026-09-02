@@ -9,6 +9,9 @@
 <body>
 <div class="app-shell">
 
+    <!-- MOBILE OVERLAY BACKDROP -->
+    <div class="mobile-backdrop" onclick="closeSidebar()"></div>
+
     <!-- FIXED SIDEBAR -->
     <aside class="sidebar" id="app-sidebar">
         <div>
@@ -77,22 +80,80 @@
                 <button class="primary-btn" onclick="scrollToSection('catalyst')">+ Analyze Candidate</button>
             </div>
 
+            <!-- METRIC CARDS WITH INTEGRATED SCIENTIFIC GRAPHICS -->
             <div class="metrics">
+                <!-- 1. Candidates Evaluated (Chemical Reactor Flask) -->
                 <div class="metric-card">
-                    <span class="metric-icon">⚗</span>
-                    <div><small>Candidates Evaluated</small><strong>{{ total }}</strong><span>Classical screening</span></div>
+                    <div class="metric-icon-box">
+                        <svg viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg" class="card-svg-icon">
+                            <rect width="54" height="54" rx="14" fill="#E0F2FE"/>
+                            <path d="M23 15V21.5L16.2 32.5C15.1 34.3 16.4 36.8 18.5 36.8H35.5C37.6 36.8 38.9 34.3 37.8 32.5L31 21.5V15" stroke="#0284C7" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M22 15H32" stroke="#0284C7" stroke-width="2.6" stroke-linecap="round"/>
+                            <path d="M19 31C22 32.5 32 32.5 35 31" stroke="#38BDF8" stroke-width="2.2" stroke-linecap="round"/>
+                            <circle cx="23" cy="27" r="1.8" fill="#0284C7"/>
+                            <circle cx="30" cy="29" r="1.5" fill="#0284C7"/>
+                            <circle cx="27" cy="24" r="1.2" fill="#38BDF8"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <small>Candidates Evaluated</small>
+                        <strong>{{ total }}</strong>
+                        <span>Classical screening</span>
+                    </div>
                 </div>
+
+                <!-- 2. Best Catalyst Score (Verification Rosette Badge) -->
                 <div class="metric-card">
-                    <span class="metric-icon blue">◈</span>
-                    <div><small>Best Catalyst Score</small><strong>{{ top.score }}%</strong><span>{{ top.name }}</span></div>
+                    <div class="metric-icon-box">
+                        <svg viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg" class="card-svg-icon">
+                            <rect width="54" height="54" rx="14" fill="#EDE9FE"/>
+                            <circle cx="27" cy="24" r="12" stroke="#7C3AED" stroke-width="2.6"/>
+                            <circle cx="27" cy="24" r="7.5" fill="#DDD6FE" stroke="#7C3AED" stroke-width="1.8"/>
+                            <path d="M24 24.2L26 26.2L30.2 22" stroke="#7C3AED" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M22 35L20 41L25 38.5L27 40" stroke="#7C3AED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M32 35L34 41L29 38.5L27 40" stroke="#7C3AED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <small>Best Catalyst Score</small>
+                        <strong>{{ top.score }}%</strong>
+                        <span>{{ top.name }}</span>
+                    </div>
                 </div>
+
+                <!-- 3. Best Energy Barrier (Reaction Potential / Kinetic Bolt) -->
                 <div class="metric-card">
-                    <span class="metric-icon yellow">ϟ</span>
-                    <div><small>Best Energy Barrier</small><strong>{{ top.energy_barrier }}</strong><span>Relative comparison</span></div>
+                    <div class="metric-icon-box">
+                        <svg viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg" class="card-svg-icon">
+                            <rect width="54" height="54" rx="14" fill="#FEF3C7"/>
+                            <path d="M29 14L19 28H27L25 40L36 26H28L29 14Z" fill="#F59E0B" stroke="#D97706" stroke-width="2" stroke-linejoin="round"/>
+                            <path d="M16 20L18 22" stroke="#D97706" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M37 32L39 34" stroke="#D97706" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <small>Best Energy Barrier</small>
+                        <strong>{{ top.energy_barrier }}</strong>
+                        <span>Relative comparison</span>
+                    </div>
                 </div>
+
+                <!-- 4. Top Potential (Bio-Ammonia Growth / Leaf Emblem) -->
                 <div class="metric-card">
-                    <span class="metric-icon green">♧</span>
-                    <div><small>Top Potential</small><strong>{{ top.potential }}</strong><span>Model-based ranking</span></div>
+                    <div class="metric-icon-box">
+                        <svg viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg" class="card-svg-icon">
+                            <rect width="54" height="54" rx="14" fill="#DCFCE7"/>
+                            <path d="M27 39V25" stroke="#16A34A" stroke-width="2.6" stroke-linecap="round"/>
+                            <path d="M27 27C27 20 37 18 37 18C37 18 37 28 27 28Z" fill="#86EFAC" stroke="#16A34A" stroke-width="2.2" stroke-linejoin="round"/>
+                            <path d="M27 31C27 25 18 23 18 23C18 23 18 32 27 32Z" fill="#BBF7D0" stroke="#16A34A" stroke-width="2.2" stroke-linejoin="round"/>
+                            <circle cx="27" cy="40" r="2" fill="#16A34A"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <small>Top Potential</small>
+                        <strong>{{ top.potential }}</strong>
+                        <span>Model-based ranking</span>
+                    </div>
                 </div>
             </div>
         </section>
@@ -358,7 +419,6 @@
 <script>
 let currentMode = 'preset';
 
-// COMPLETE 8 CANDIDATE CLIENT DATABASE
 const CATALYST_DB = {
     "pt_c": { name: "Pt/C Benchmark", formula: "20 wt% Platinum Carbon", score: 92.3, energy: "8.5", stability: "Very High", selectivity: "98.0%", activity: "95.0%", potential: "High Potential", energy_red: "42.0%", co2_red: "38.5%" },
     "fe_n4_c": { name: "Fe-N₄-C", formula: "Iron Tetra-Nitrogen Carbon", score: 88.5, energy: "11.2", stability: "High", selectivity: "96.0%", activity: "91.0%", potential: "High Potential", energy_red: "36.5%", co2_red: "32.0%" },
@@ -379,13 +439,25 @@ const PERIODIC_TABLE = {
     72:"Hf", 73:"Ta", 74:"W", 75:"Re", 76:"Os", 77:"Ir", 78:"Pt", 79:"Au", 80:"Hg", 83:"Bi"
 };
 
+// MOBILE-AWARE SIDEBAR CONTROLLERS
 function toggleSidebar() {
-    document.body.classList.toggle("sidebar-collapsed");
+    if (window.innerWidth <= 768) {
+        document.body.classList.toggle("mobile-menu-open");
+    } else {
+        document.body.classList.toggle("sidebar-collapsed");
+    }
+}
+
+function closeSidebar() {
+    document.body.classList.remove("mobile-menu-open");
 }
 
 function setActiveNav(element) {
     document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
     if (element) element.classList.add('active');
+    if (window.innerWidth <= 768) {
+        closeSidebar();
+    }
 }
 
 function scrollToSection(id) {
@@ -537,13 +609,11 @@ function analyzeCandidate() {
             }, 250);
         }
     } else {
-        // Custom candidate formula estimation
         setTimeout(() => {
             const name = document.getElementById("cust-name").value || "Custom-SAC";
             const z = parseFloat(document.getElementById("cust-z").value) || 24;
             const en = parseFloat(document.getElementById("cust-en").value) || 1.6;
             
-            // Empirical screening formula
             const barrier = (10 + (Math.abs(26 - z) * 0.4) + (en * 1.5)).toFixed(1);
             const score = Math.max(50, Math.min(95, (100 - (barrier * 2.2)))).toFixed(1);
 

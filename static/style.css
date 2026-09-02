@@ -19,14 +19,14 @@
     box-sizing: border-box;
 }
 
-/* LOCK ENTIRE OUTER WINDOW FROM SCROLLING */
+/* DESKTOP VIEWPORT LOCK */
 html, body {
     margin: 0;
     padding: 0;
     width: 100vw;
     height: 100vh;
     max-height: 100vh;
-    overflow: hidden !important;
+    overflow: hidden;
     background: 
         radial-gradient(circle at 90% 0%, rgba(2, 132, 199, 0.04), transparent 40%),
         radial-gradient(circle at 10% 100%, rgba(22, 163, 74, 0.03), transparent 30%),
@@ -45,7 +45,7 @@ button, select, input { font: inherit; }
     position: relative;
 }
 
-/* --- PINNED FIXED SIDEBAR (NEVER SCROLLS WITH PAGE) --- */
+/* SIDEBAR (DESKTOP) */
 .sidebar {
     width: 255px;
     min-width: 255px;
@@ -150,11 +150,11 @@ body.sidebar-collapsed .sidebar {
     margin-right: 6px;
 }
 
-/* --- RIGHT MAIN WORKSPACE (INDIVIDUAL SCROLL CONTAINER) --- */
+/* MAIN WORKSPACE (DESKTOP) */
 .main {
     flex: 1;
     height: 100vh;
-    overflow-y: auto !important; /* Only this workspace pane scrolls */
+    overflow-y: auto !important;
     overflow-x: hidden;
     padding: 28px 36px 60px;
     box-sizing: border-box;
@@ -222,7 +222,7 @@ body.sidebar-collapsed .main {
     font-size: 0.88rem;
 }
 
-/* --- CARDS & PANELS --- */
+/* METRICS */
 .metrics {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -237,27 +237,27 @@ body.sidebar-collapsed .main {
 }
 
 .metric-card {
-    padding: 20px;
+    padding: 18px 20px;
     display: flex;
     gap: 16px;
     align-items: center;
 }
 
-.metric-icon {
-    width: 48px;
-    height: 48px;
-    min-width: 48px;
-    border-radius: 12px;
-    display: grid;
-    place-items: center;
-    background: var(--primary-light);
-    color: var(--primary);
-    font-size: 20px;
+.metric-icon-box {
+    width: 54px;
+    height: 54px;
+    min-width: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
 }
 
-.metric-icon.blue { background: #ede9fe; color: #7c3aed; }
-.metric-icon.yellow { background: var(--yellow-light); color: var(--yellow); }
-.metric-icon.green { background: var(--green-light); color: var(--green); }
+.card-svg-icon {
+    width: 54px;
+    height: 54px;
+    display: block;
+}
 
 .metric-card small {
     display: block;
@@ -361,7 +361,7 @@ select:focus, .custom-live-input:focus {
     margin-top: 12px;
 }
 
-/* --- PIPELINE & MOLECULAR DISPLAY --- */
+/* PROCESS PIPELINE */
 .pipeline {
     display: flex;
     align-items: center;
@@ -426,7 +426,7 @@ select:focus, .custom-live-input:focus {
     margin: 0;
 }
 
-/* --- BADGES & STATUS --- */
+/* BADGES & SCORE */
 .badge {
     border: 1px solid var(--border);
     color: var(--text-muted);
@@ -439,7 +439,6 @@ select:focus, .custom-live-input:focus {
 
 .badge.loading { background: #fefce8; color: var(--yellow); border-color: #fde047; }
 .badge.success { background: #f0fdf4; color: var(--green); border-color: #bbf7d0; }
-.badge.error { background: #fef2f2; color: #dc2626; border-color: #fecaca; }
 
 .result-head {
     display: flex;
@@ -514,7 +513,7 @@ select:focus, .custom-live-input:focus {
 .property span { color: var(--text-muted); font-size: 13px; }
 .property strong { color: var(--text); font-weight: 700; }
 
-/* --- TABLE --- */
+/* TABLE */
 .table-panel { overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; min-width: 650px; }
 th {
@@ -558,7 +557,7 @@ td small { color: var(--text-muted); }
     font-weight: 700;
 }
 
-/* --- CHARTS --- */
+/* CHARTS */
 .bar-row {
     display: grid;
     grid-template-columns: 140px 1fr 45px;
@@ -610,7 +609,7 @@ td small { color: var(--text-muted); }
     font-size: 9px;
 }
 
-/* --- ENVIRONMENTAL IMPACT & REPORT --- */
+/* IMPACT */
 .impact-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -671,17 +670,96 @@ footer {
     border-top: 1px solid var(--border);
 }
 
-/* --- RESPONSIVE BREAKPOINTS --- */
+/* TABLET BREAKPOINT */
 @media (max-width: 1024px) {
     .metrics { grid-template-columns: repeat(2, 1fr); }
     .designer-grid, .analysis-grid, .charts-grid, .impact-grid { grid-template-columns: 1fr; }
 }
 
+/* MOBILE RESPONSIVE DRAWER & SCROLLING (< 768px) */
 @media (max-width: 768px) {
-    .sidebar { margin-left: -255px; position: fixed; height: 100vh; }
-    body.sidebar-open .sidebar { margin-left: 0; }
-    .main { padding: 20px 14px; }
-    .topbar { flex-direction: column; gap: 14px; }
-    .topbar h2 { font-size: 22px; }
-    .metrics { grid-template-columns: 1fr; }
+    html, body {
+        overflow-y: auto !important;
+        height: auto !important;
+        max-height: none !important;
+    }
+
+    .app-shell {
+        display: block !important;
+        height: auto !important;
+        width: 100% !important;
+        overflow: visible !important;
+    }
+
+    /* Mobile Sliding Drawer */
+    .sidebar {
+        position: fixed !important;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 270px !important;
+        min-width: 270px !important;
+        height: 100vh !important;
+        z-index: 99999 !important;
+        transform: translateX(-100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        box-shadow: 4px 0 24px rgba(0,0,0,0.15);
+    }
+
+    body.mobile-menu-open .sidebar {
+        transform: translateX(0) !important;
+    }
+
+    /* Backdrop */
+    .mobile-backdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.5);
+        backdrop-filter: blur(2px);
+        z-index: 99998;
+    }
+
+    body.mobile-menu-open .mobile-backdrop {
+        display: block;
+    }
+
+    /* Workspace */
+    .main {
+        width: 100% !important;
+        height: auto !important;
+        overflow: visible !important;
+        padding: 16px 14px 60px !important;
+    }
+
+    .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .topbar h2 {
+        font-size: 20px !important;
+    }
+
+    .designer-grid, .analysis-grid, .charts-grid, .impact-grid, .metrics {
+        grid-template-columns: 1fr !important;
+        gap: 14px !important;
+    }
+
+    #custom-controls > div {
+        grid-template-columns: 1fr !important;
+    }
+
+    .metric-card {
+        padding: 14px 16px !important;
+    }
+
+    .molecule-placeholder {
+        height: 220px !important;
+    }
+
+    .energy-bar small {
+        display: none; /* Hide rotated labels to prevent mobile overflow */
+    }
 }
